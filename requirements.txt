@@ -1,5 +1,5 @@
 streamlit
-pymongo
+pymongo[srv]
 pandas
 plotly-express
 certifi
