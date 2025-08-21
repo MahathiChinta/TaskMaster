@@ -4,7 +4,7 @@ import plotly.express as px
 from pymongo import MongoClient, errors
 from bson.objectid import ObjectId
 from datetime import datetime
-
+import certifi
 # ---------------------------------------------------------------------
 # 1. PAGE CONFIGURATION
 # ---------------------------------------------------------------------
@@ -24,7 +24,7 @@ st.set_page_config(
 def init_connection():
     """Initializes a connection to the MongoDB database. Returns the client object."""
     try:
-        client = MongoClient(st.secrets["mongo"]["uri"])
+        client = MongoClient(st.secrets["mongo"]["uri"], tlsCAFile=certifi.where())
         return client
     except errors.ConnectionFailure as e:
         st.error(f"Could not connect to MongoDB: {e}")
@@ -218,4 +218,5 @@ if all_tasks:
                     st.toast(f"Task '{task['Task']}' deleted.", icon="🗑️")
                     st.rerun()
 else:
+
     st.info("No tasks found. Add your first task from the sidebar!", icon="☝️")
