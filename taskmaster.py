@@ -1,10 +1,10 @@
+import certifi
 import streamlit as st
 import pandas as pd
 import plotly.express as px
 from pymongo import MongoClient, errors
 from bson.objectid import ObjectId
 from datetime import datetime
-import certifi
 # ---------------------------------------------------------------------
 # 1. PAGE CONFIGURATION
 # ---------------------------------------------------------------------
@@ -30,7 +30,8 @@ def init_connection():
         st.error(f"Could not connect to MongoDB: {e}")
         st.stop() # App can't run without a db, so we stop here.
     except Exception as e:
-        st.error(f"An unexpected error occurred: {e}")
+        st.error("Failed to create a client connection to MongoDB.")
+        st.error(f"Error details: {e}")
         st.stop()
 
 # Initialize the connection
@@ -44,7 +45,8 @@ try:
         st.toast("Database connection successful!", icon="🎉")
         st.session_state.db_connection_success = True
 except Exception as e:
-    st.error(f"Database is not responsive: {e}")
+    st.error(f"Database is not responsive. Check your IP Access List and connection string.")
+    st.error(f"Ping failed: {e}")
     st.stop()
 
 # Get the database and collection
@@ -220,3 +222,4 @@ if all_tasks:
 else:
 
     st.info("No tasks found. Add your first task from the sidebar!", icon="☝️")
+
